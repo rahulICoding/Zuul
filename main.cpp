@@ -4,6 +4,12 @@
 #include <cstring>
 using namespace std;
 
+void printRoom(Room* toPrint, vector<Item*> inventoryy);
+void addItem(Room* currentRoom, char* itemlistt, vector<Item*> &inventoryy);
+void printInventory(vector<Item*> inventory);
+void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory);
+
+
 int main(){
   char north[10] =  "north";
   char south[10] = "south";
@@ -134,7 +140,65 @@ int main(){
   rooms.push_back(trece);
   rooms.push_back(catorce);
   rooms.push_back(quince);
-  
+
+  Room* currentRoom = uno;
+  bool won = false;
+  char input[10];
+  cout << "ZUUL"<< endl;
+  while(!won){
+    cout << endl;
+    printRoom(currentRoom,inventory);
+    if(strcmp(currentRoom->getLabel(),"driveway")==0){
+      break;
+    }
+    cout << "Type go, drop, pick up, or quit!" << endl;
+    cin.get(input,10);
+    cin.get();
+    if(input[0]=='q' || input[0]=='Q'){
+      break;
+    }
+    else if(input[0]=='g' || input[0]=='G'){
+      char exit[10];
+      cout << "type which exit you would like to use" << endl;
+      cin.get(exit,10);
+      cin.get();
+      if(currentRoom->getNextRoom(exit)!=NULL){
+	currentRoom = currentRoom->getNextRoom(exit);
+      }
+      else{
+	cout << "this is not a valid exit" << endl;
+      }
+    }
+    else if(input[0]=='p' || input[0]=='P'){
+      char itemlabel[10];
+      cout << "which of the above items would you like to pick up" << endl;
+      cin.get(itemlabel,10);
+      cin.get();
+      addItem(currentRoom, itemlabel,inventory);
+    }
+    else if(input[0]=='d' || input[0]=='D'){
+      char itemlabel[10];
+      cout << "which of the items in your inventory would you like to drop" << endl;
+      cin.get(itemlabel,10);
+      cin.get();
+      dropItem(itemlabel,currentRoom, inventory);
+    }
+  }
+    
   return 0;
+}
+void addItem(Room* currentRoom, char* itemlabell, vector<Item*> &inventoryy){
+  
+}
+
+void printRoom(Room* toPrint, vector<Item*> inventoryy){
+
+}
+
+void printInventory(vector<Item*> inventory){
+
+}
+
+void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
 
 }
