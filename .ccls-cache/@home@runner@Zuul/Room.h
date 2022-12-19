@@ -5,7 +5,6 @@
 
 using namespace std;
 class Room{
- 
  public:
   Room(char*,char*);
   char* getInfo();

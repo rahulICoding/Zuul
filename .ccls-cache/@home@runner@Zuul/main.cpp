@@ -9,16 +9,16 @@ void addItem(Room* currentRoom, char* itemlistt, vector<Item*> &inventoryy);
 void printInventory(vector<Item*> inventory);
 void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory);
 
-
 int main(){
   char north[10] =  "north";
   char south[10] = "south";
   char east[10] = "east";
-  char west[10] = "EAST";
+  char west[10] = "west";
   vector<Item*> inventory;
   vector<Room*> rooms;
 
   char item[20] = "";
+  
   char label[20] = "1";
   char description[150] = "You are in room numero uno";
   Room* uno = new Room(label, description);
@@ -148,13 +148,12 @@ int main(){
   while(!won){
     cout << endl;
     printRoom(currentRoom,inventory);
-    if(strcmp(currentRoom->getLabel(),"driveway")==0){
-      break;
-    }
-    cout << "Type go, drop, pick up, or quit!" << endl;
+    
+    cout << "type go, drop, add, or quit" << endl;
     cin.get(input,10);
     cin.get();
     if(input[0]=='q' || input[0]=='Q'){
+      cout << "good game" << endl;
       break;
     }
     else if(input[0]=='g' || input[0]=='G'){
@@ -166,37 +165,57 @@ int main(){
 	currentRoom = currentRoom->getNextRoom(exit);
       }
       else{
-	cout << "this is not a valid exit" << endl;
+	cout << "no exit" << endl;
       }
     }
-    else if(input[0]=='p' || input[0]=='P'){
-      char itemlabel[10];
-      cout << "which of the above items would you like to pick up" << endl;
-      cin.get(itemlabel,10);
+    else if(input[0]=='a' || input[0]=='A'){
+      char itemName[10];
+      cout << "what items do you want to pickup" << endl;
+      cin.get(itemName,10);
       cin.get();
-      addItem(currentRoom, itemlabel,inventory);
+      addItem(currentRoom, itemName,inventory);
     }
     else if(input[0]=='d' || input[0]=='D'){
-      char itemlabel[10];
-      cout << "which of the items in your inventory would you like to drop" << endl;
-      cin.get(itemlabel,10);
+      char itemName[10];
+      cout << "what items do you want to drop" << endl;
+      cin.get(itemName,10);
       cin.get();
-      dropItem(itemlabel,currentRoom, inventory);
+      dropItem(itemName,currentRoom, inventory);
     }
   }
     
   return 0;
 }
-void addItem(Room* currentRoom, char* itemlabell, vector<Item*> &inventoryy){
-  
+void addItem(Room* currentRoom, char* itemName1, vector<Item*> &inventory1){
+  if(currentRoom->getItem(itemName1)!= 0){
+    inventory1.push_back(currentRoom->getItem(itemName1));
+    currentRoom->removeItem(itemName1);
+  }
+  else{
+    cout << "item not here" << endl;
+  }
 }
 
-void printRoom(Room* toPrint, vector<Item*> inventoryy){
-
+void printRoom(Room* toPrint, vector<Item*> inventory1){
+  char print[150];
+  strcpy(print,(toPrint->getInfo()));
+  cout << endl;
+  cout << endl;
+  cout << print << endl;
+  toPrint->printItems();
+  cout << "Exits: " << endl;
+  toPrint->printExits();
+  cout << endl;
+  cout << "Your inventory: " << endl;
+  printInventory(inventory1);
+  cout << endl;
+  cout << endl;
 }
 
 void printInventory(vector<Item*> inventory){
-
+  for(vector<Item*>::iterator itr=inventory.begin();                   itr!=inventory.end(); itr++){
+    cout << (*itr)->getItemName() << " ";
+  }
 }
 
 void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
