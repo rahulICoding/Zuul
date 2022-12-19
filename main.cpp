@@ -219,5 +219,19 @@ void printInventory(vector<Item*> inventory){
 }
 
 void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
+   for(vector<Item*>::iterator itr =inventory.begin(); itr !=inventory.end(); itr ++){
+    char* currentLabel = (*itr)->getItemName();
+    if(strcmp(item,currentLabel)==0){
+      currentRoom->addItem(*itr);
+      break;
+    }
+  }
+  for(vector<Item*>::iterator itr =inventory.begin(); itr!=inventory.end(); itr++){
+    char* currentLabel = (*itr)->getItemName();
+    if(strcmp(item,currentLabel)==0){
+      inventory.erase(itr);
+      break;
+    }
+  }
 
 }
