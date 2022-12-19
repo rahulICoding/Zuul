@@ -205,6 +205,7 @@ int main(){
     
   return 0;
 }
+//adding items to the users inventory
 void addItem(Room* currentRoom, char* itemName1, vector<Item*> &inventory1){
   if(currentRoom->getItem(itemName1)!= 0){
     inventory1.push_back(currentRoom->getItem(itemName1));
@@ -214,7 +215,7 @@ void addItem(Room* currentRoom, char* itemName1, vector<Item*> &inventory1){
     cout << "item not here" << endl;
   }
 }
-
+//dropping items in rooms and getting rid of them ffrom the vectors
 void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
    for(vector<Item*>::iterator itr =inventory.begin(); itr !=inventory.end(); itr ++){
     char* currentLabel = (*itr)->getItemName();
@@ -232,7 +233,7 @@ void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
   }
 
 }
-
+//printing the items in the room and the exits from your room
 void printRoom(Room* toPrint, vector<Item*> inventory1){
   char print[150];
   strcpy(print,(toPrint->getInfo()));
@@ -248,7 +249,7 @@ void printRoom(Room* toPrint, vector<Item*> inventory1){
   cout << endl;
   cout << endl;
 }
-
+//printing the inventory that the user has
 void printInventory(vector<Item*> inventory){
   for(vector<Item*>::iterator itr=inventory.begin();                   itr!=inventory.end(); itr++){
     cout << (*itr)->getItemName() << " ";
