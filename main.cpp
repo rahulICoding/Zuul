@@ -1,9 +1,15 @@
+//Rahul Iyer
+//Dec 18, 2022
+//this program allows you to enter a maze and try to find your way out. In order to win you have to go to room 3 and toom 14 to finish the maze. You can pick up and drop different items along the way as you go to different rooms. Good Luck
+//Thank you Armaan for helping with the Room and Item files
+
 #include <iostream>
 #include "Room.h"
 #include <vector>
 #include <cstring>
 using namespace std;
 
+//function prototypes
 void printRoom(Room* toPrint, vector<Item*> inventoryy);
 void addItem(Room* currentRoom, char* itemlistt, vector<Item*> &inventoryy);
 void printInventory(vector<Item*> inventory);
@@ -18,7 +24,8 @@ int main(){
   vector<Room*> rooms;
 
   char item[20] = "";
-  
+
+  //creating room names and the items within
   char label[20] = "1";
   char description[150] = "You are in room numero uno";
   Room* uno = new Room(label, description);
@@ -94,6 +101,7 @@ int main(){
   strcpy(description ,"You are in room numero quince");
   Room* quince = new Room(label,description);
 
+  //making the directions within each room
   uno->addNeighbor(north, dos);
   dos->addNeighbor(north, tres);
   dos->addNeighbor(south, uno);
@@ -122,7 +130,6 @@ int main(){
   doce->addNeighbor(north, quince);
   trece->addNeighbor(south, catorce);
   trece->addNeighbor(west, ocho);
-  catorce->addNeighbor(north, trece);
   quince->addNeighbor(south, doce);
 
   rooms.push_back(uno);
@@ -141,14 +148,26 @@ int main(){
   rooms.push_back(catorce);
   rooms.push_back(quince);
 
+  //variables used withing the program
   Room* currentRoom = uno;
   bool won = false;
   char input[10];
+  int count = 0;
   cout << "ZUUL"<< endl;
   while(!won){
     cout << endl;
+    //print what is in your inventory
     printRoom(currentRoom,inventory);
-    
+//win conditino
+    if((strcmp(currentRoom->getRoomName(),"3") == 0) || (strcmp(currentRoom->getRoomName(),"14") == 0)){
+      count++;
+    }
+
+    if(count == 2){
+      cout << "good game" << endl;
+      break;
+    }
+    //what do you want to do
     cout << "type go, drop, add, or quit" << endl;
     cin.get(input,10);
     cin.get();
@@ -158,7 +177,7 @@ int main(){
     }
     else if(input[0]=='g' || input[0]=='G'){
       char exit[10];
-      cout << "type which exit you would like to use" << endl;
+      cout << "which way do you want to go" << endl;
       cin.get(exit,10);
       cin.get();
       if(currentRoom->getNextRoom(exit)!=NULL){
@@ -196,6 +215,24 @@ void addItem(Room* currentRoom, char* itemName1, vector<Item*> &inventory1){
   }
 }
 
+void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
+   for(vector<Item*>::iterator itr =inventory.begin(); itr !=inventory.end(); itr ++){
+    char* currentLabel = (*itr)->getItemName();
+    if(strcmp(item,currentLabel)==0){
+      currentRoom->addItem(*itr);
+      break;
+    }
+  }
+  for(vector<Item*>::iterator itr =inventory.begin(); itr!=inventory.end(); itr++){
+    char* currentLabel = (*itr)->getItemName();
+    if(strcmp(item,currentLabel)==0){
+      inventory.erase(itr);
+      break;
+    }
+  }
+
+}
+
 void printRoom(Room* toPrint, vector<Item*> inventory1){
   char print[150];
   strcpy(print,(toPrint->getInfo()));
@@ -216,22 +253,4 @@ void printInventory(vector<Item*> inventory){
   for(vector<Item*>::iterator itr=inventory.begin();                   itr!=inventory.end(); itr++){
     cout << (*itr)->getItemName() << " ";
   }
-}
-
-void dropItem(char* item, Room* currentRoom, vector<Item*> &inventory){
-   for(vector<Item*>::iterator itr =inventory.begin(); itr !=inventory.end(); itr ++){
-    char* currentLabel = (*itr)->getItemName();
-    if(strcmp(item,currentLabel)==0){
-      currentRoom->addItem(*itr);
-      break;
-    }
-  }
-  for(vector<Item*>::iterator itr =inventory.begin(); itr!=inventory.end(); itr++){
-    char* currentLabel = (*itr)->getItemName();
-    if(strcmp(item,currentLabel)==0){
-      inventory.erase(itr);
-      break;
-    }
-  }
-
 }
